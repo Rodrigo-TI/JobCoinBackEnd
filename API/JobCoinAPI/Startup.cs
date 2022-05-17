@@ -57,7 +57,7 @@ namespace JobCoinAPI
 			 .AllowAnyMethod()
 			 .AllowAnyHeader());
 
-			app.UseHttpsRedirection();
+			//app.UseHttpsRedirection();
 
 			app.UseRouting();
 
@@ -69,8 +69,6 @@ namespace JobCoinAPI
 			{
 				endpoints.MapControllers();
 			});
-
-			context.Database.Migrate();
 		}
 
 		private void AddDatabaseConfiguration(IServiceCollection services)

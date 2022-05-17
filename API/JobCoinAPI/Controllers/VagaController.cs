@@ -242,7 +242,7 @@ namespace JobCoinAPI.Controllers
 
 				return vagasViewModels == null ? NoContent() : Ok(retornoVagas);
 			}
-			catch (Exception e)
+			catch (Exception)
 			{
 				return StatusCode(500);
 			}

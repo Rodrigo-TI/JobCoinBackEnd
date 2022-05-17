@@ -16,11 +16,16 @@ namespace JobCoinAPI
 			CreateHostBuilder(args).Build().Run();
 		}
 
-		public static IHostBuilder CreateHostBuilder(string[] args) =>
-			Host.CreateDefaultBuilder(args)
+		public static IHostBuilder CreateHostBuilder(string[] args)
+		{
+			return Host.CreateDefaultBuilder(args)
 				.ConfigureWebHostDefaults(webBuilder =>
 				{
+					var porta = Environment.GetEnvironmentVariable("PORT") ?? "5000";
+
 					webBuilder.UseStartup<Startup>();
+					.UseUrls("http://*:" + porta);
 				});
+		}
 	}
 }
