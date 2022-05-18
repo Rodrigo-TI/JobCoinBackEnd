@@ -129,6 +129,7 @@ namespace JobCoinAPI.Controllers
 		}
 
 		[HttpGet]
+		[AllowAnonymous]
 		public async Task<IActionResult> GetAllPerfisAsync(
 			[FromServices] DataContext context,
 			[FromQuery] string nome,

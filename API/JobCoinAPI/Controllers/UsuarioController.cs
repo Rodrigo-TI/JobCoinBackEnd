@@ -26,6 +26,7 @@ namespace JobCoinAPI.Controllers
 	public class UsuarioController : ControllerBase
 	{
 		[HttpPost]
+		[AllowAnonymous]
 		public async Task<IActionResult> PostAsync(
 			[FromServices] DataContext context,
 			[FromBody] CriacaoUsuarioViewModel usuarioViewModel)
