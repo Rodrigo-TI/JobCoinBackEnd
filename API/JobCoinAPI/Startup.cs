@@ -41,6 +41,8 @@ namespace JobCoinAPI
 			AddDatabaseConfiguration(services);
 
 			AddJwtBearerAuthentication(services);
+
+			AddCorsConfiguration(services);
 		}
 
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DataContext context)
@@ -52,10 +54,7 @@ namespace JobCoinAPI
 				app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "JobCoinAPI v1"));
 			}
 
-			app.UseCors(builder => builder
-			 .AllowAnyOrigin()
-			 .AllowAnyMethod()
-			 .AllowAnyHeader());
+			app.UseCors();
 
 			//app.UseHttpsRedirection();
 
@@ -144,6 +143,15 @@ namespace JobCoinAPI
 			var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
 			var xmlPath = System.IO.Path.Combine(AppContext.BaseDirectory, xmlFile);
 			swaggerGenOptions.IncludeXmlComments(xmlPath);
+		}
+
+		private void AddCorsConfiguration(IServiceCollection services)
+		{
+			services.AddCors(options =>
+				options.AddDefaultPolicy(policys => policys
+					.AllowAnyOrigin()
+					.AllowAnyMethod()
+					.AllowAnyHeader()));
 		}
 	}
 }
