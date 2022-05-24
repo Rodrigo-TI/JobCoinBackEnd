@@ -13,21 +13,21 @@ namespace JobCoinAPI.Shared
 {
 	public class Seguranca
 	{
-        private static List<(string, string)> _refreshTokens = new List<(string, string)>();
+        private static List<(Guid,string)> _refreshTokens = new List<(Guid,string)>();
 
-        public static void SalvarRefreshToken(string email, string refreshToken)
+        public static void SalvarRefreshToken(Guid idUsuario, string refreshToken)
 		{
-            _refreshTokens.Add(new(email, refreshToken));
+            _refreshTokens.Add(new(idUsuario, refreshToken));
         }
         
-        public static string GetRefreshToken(string email)
+        public static string GetRefreshToken(Guid idUsuario)
         {
-            return _refreshTokens.FirstOrDefault(refreshToken => refreshToken.Item1 == email).Item2;
+            return _refreshTokens.FirstOrDefault(refreshToken => refreshToken.Item1 == idUsuario).Item2;
         }
 
-        public static void DeletarRefreshToken(string email, string refreshToken)
+        public static void DeletarRefreshToken(Guid idUsuario, string refreshToken)
         {
-            var item = _refreshTokens.FirstOrDefault(rt => rt.Item1 == email
+            var item = _refreshTokens.FirstOrDefault(rt => rt.Item1 == idUsuario
                 && rt.Item2 == refreshToken);
 
             _refreshTokens.Remove(item);
@@ -59,6 +59,7 @@ namespace JobCoinAPI.Shared
             {
                 new Claim(ClaimTypes.NameIdentifier, usuario.IdUsuario.ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, usuario.Email),
+                new Claim(ClaimTypes.GivenName, usuario.Nome),
                 new Claim(ClaimTypes.Role, usuario.Perfil.NomePerfil)
             };
 
@@ -86,7 +87,7 @@ namespace JobCoinAPI.Shared
 
         public static string GerarRefreshToken()
 		{
-            return $"{Guid.NewGuid().ToString()}-{Guid.NewGuid().ToString()}";
+            return $"{Guid.NewGuid()}-{Guid.NewGuid()}";
 		}
 
         public static ClaimsPrincipal ExtrairClaimsTokenAntigo(Autenticacao autenticacao, string token)

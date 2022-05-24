@@ -35,8 +35,8 @@ namespace JobCoinAPI.Controllers
 				var usuarioByLogin = await context.Usuarios
 					.AsNoTracking()
 					.Include(usuario => usuario.Perfil)
-					.Where(usuario => usuario.Email.ToLower().Equals(loginUsuarioViewModel.Email.ToLower())
-						&& usuario.Senha.Equals(senha))
+					.Where(usuario => usuario.Email.ToLower() == loginUsuarioViewModel.Email.ToLower()
+						&& usuario.Senha == senha)
 					.FirstOrDefaultAsync();
 
 				if (usuarioByLogin == null)
@@ -45,7 +45,7 @@ namespace JobCoinAPI.Controllers
 				var token = Seguranca.GerarToken(autenticacao, usuarioByLogin, null);
 				var refreshToken = Seguranca.GerarRefreshToken();
 
-				Seguranca.SalvarRefreshToken(usuarioByLogin.Email, refreshToken);
+				Seguranca.SalvarRefreshToken(usuarioByLogin.IdUsuario, refreshToken);
 
 				return Ok(new { token = token, refreshToken = refreshToken });
 			}
@@ -62,8 +62,8 @@ namespace JobCoinAPI.Controllers
 			[FromBody] RefreshTokenViewModel refreshTokenViewModel)
 		{
 			var principal = Seguranca.ExtrairClaimsTokenAntigo(autenticacao, refreshTokenViewModel.Token);
-			var email = principal.Claims.FirstOrDefault(i => i.Type.Contains("emailaddress")).Value;
-			var refreshTokenSalvo = Seguranca.GetRefreshToken(email);
+			var idUsuario = Guid.Parse(principal.Claims.FirstOrDefault(c => c.Type.Contains("nameidentifier")).Value);
+			var refreshTokenSalvo = Seguranca.GetRefreshToken(idUsuario);
 
 			if (refreshTokenSalvo != refreshTokenViewModel.RefreshToken)
 				throw new SecurityTokenException("Refresh token inválido !");
@@ -71,8 +71,8 @@ namespace JobCoinAPI.Controllers
 			var novoToken = Seguranca.GerarToken(autenticacao, null, principal.Claims);
 			var novoRefreshToken = Seguranca.GerarRefreshToken();
 
-			Seguranca.DeletarRefreshToken(email, refreshTokenViewModel.RefreshToken);
-			Seguranca.SalvarRefreshToken(email, novoRefreshToken);
+			Seguranca.DeletarRefreshToken(idUsuario, refreshTokenViewModel.RefreshToken);
+			Seguranca.SalvarRefreshToken(idUsuario, novoRefreshToken);
 
 			return new ObjectResult(new
 			{
