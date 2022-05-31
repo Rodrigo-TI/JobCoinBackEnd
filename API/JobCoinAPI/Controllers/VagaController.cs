@@ -258,8 +258,7 @@ namespace JobCoinAPI.Controllers
 		public async Task<IActionResult> GetAllCriadasAsync(
 			[FromServices] DataContext context,
 			[FromRoute] Guid idUsuario,
-			[FromQuery] string nomeVaga,
-			[FromQuery] string descricaoVaga,
+			[FromQuery] string palavraChave,
 			[FromQuery] float valorMenorQue,
 			[FromQuery] float valorMaiorQue,
 			[FromQuery] string ordenar,
@@ -272,18 +271,12 @@ namespace JobCoinAPI.Controllers
 					.AsNoTracking()
 					.Where(vagaCriada => vagaCriada.IdUsuarioCriacaoVaga.Equals(idUsuario));
 
-				if (!string.IsNullOrEmpty(nomeVaga))
+				if (!string.IsNullOrEmpty(palavraChave))
 				{
 					consultaVagasCriadas = consultaVagasCriadas
 						.Where(vagaCriada =>
-							vagaCriada.NomeVaga.ToLower().Contains(nomeVaga.ToLower()));
-				}
-
-				if (!string.IsNullOrEmpty(descricaoVaga))
-				{
-					consultaVagasCriadas = consultaVagasCriadas
-						.Where(vagaCriada =>
-							vagaCriada.DescricaoVaga.ToLower().Contains(descricaoVaga.ToLower()));
+							vagaCriada.NomeVaga.ToLower().Contains(palavraChave.ToLower())
+							|| vagaCriada.DescricaoVaga.ToLower().Contains(palavraChave.ToLower()));
 				}
 
 				if (valorMenorQue > 0)
@@ -364,8 +357,7 @@ namespace JobCoinAPI.Controllers
 		public async Task<IActionResult> GetAllFavoritadasAsync(
 			[FromServices] DataContext context,
 			[FromRoute] Guid idUsuario,
-			[FromQuery] string nomeVaga,
-			[FromQuery] string descricaoVaga,
+			[FromQuery] string palavraChave,
 			[FromQuery] float valorMenorQue,
 			[FromQuery] float valorMaiorQue,
 			[FromQuery] string ordenar,
@@ -381,18 +373,12 @@ namespace JobCoinAPI.Controllers
 					.Where(vagaFavoritada => vagaFavoritada.IdUsuario.Equals(idUsuario))
 					.AsQueryable();
 
-				if (!string.IsNullOrEmpty(nomeVaga))
+				if (!string.IsNullOrEmpty(palavraChave))
 				{
 					consultaVagasFavoritadas = consultaVagasFavoritadas
 						.Where(vagaFavoritada =>
-							vagaFavoritada.Vaga.NomeVaga.ToLower().Contains(nomeVaga.ToLower()));
-				}
-
-				if (!string.IsNullOrEmpty(descricaoVaga))
-				{
-					consultaVagasFavoritadas = consultaVagasFavoritadas
-						.Where(vagaFavoritada =>
-							vagaFavoritada.Vaga.DescricaoVaga.ToLower().Contains(descricaoVaga.ToLower()));
+							vagaFavoritada.Vaga.NomeVaga.ToLower().Contains(palavraChave.ToLower())
+							|| vagaFavoritada.Vaga.DescricaoVaga.ToLower().Contains(palavraChave.ToLower()));
 				}
 
 				if (valorMenorQue > 0)
