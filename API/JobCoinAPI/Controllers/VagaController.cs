@@ -146,10 +146,10 @@ namespace JobCoinAPI.Controllers
 		}
 
 		[HttpGet]
+		[AllowAnonymous]
 		public async Task<IActionResult> GetAllAsync(
 			[FromServices] DataContext context,
-			[FromQuery] string nomeVaga,
-			[FromQuery] string descricaoVaga,
+			[FromQuery] string palavraChave,
 			[FromQuery] float valorMenorQue,
 			[FromQuery] float valorMaiorQue,
 			[FromQuery] string ordenar,
@@ -158,21 +158,26 @@ namespace JobCoinAPI.Controllers
 		{
 			try
 			{
+				var perfilEmpregador = await context.Perfis
+					.AsNoTracking()
+					.Where(perfil =>
+						perfil.NomePerfil == "Empregador")
+					.FirstOrDefaultAsync();
+
+				if (perfilEmpregador == null)
+					return NoContent();
+
 				var consultaVagas = context.Vagas
-					.AsNoTracking();
+					.AsNoTracking()
+					.Where(vaga =>
+						vaga.UsuarioCriacaoVaga.IdPerfil == perfilEmpregador.IdPerfil);
 
-				if (!string.IsNullOrEmpty(nomeVaga))
+				if (!string.IsNullOrEmpty(palavraChave))
 				{
 					consultaVagas = consultaVagas
 						.Where(vaga =>
-							vaga.NomeVaga.ToLower().Contains(nomeVaga.ToLower()));
-				}
-
-				if (!string.IsNullOrEmpty(descricaoVaga))
-				{
-					consultaVagas = consultaVagas
-						.Where(vaga =>
-							vaga.DescricaoVaga.ToLower().Contains(descricaoVaga.ToLower()));
+							vaga.NomeVaga.ToLower().Contains(palavraChave.ToLower())
+							|| vaga.DescricaoVaga.ToLower().Contains(palavraChave.ToLower()));
 				}
 
 				if (valorMenorQue > 0)
