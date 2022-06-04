@@ -36,11 +36,11 @@ namespace JobCoinAPI.Shared
 			return consulta;
 		}
 
-		public static Paginacao<T> PegarPaginacao(int numeroTotalItens, int numeroPaginaAtual, IEnumerable<T> itensPaginaAtual)
+		public static Paginacao<T> PegarPaginacao(int numeroTotalItens, int numeroPaginaAtual, int numeroItensPorPagina, IEnumerable<T> itensPaginaAtual)
 		{
 			return new Paginacao<T>
 			{
-				NumeroPaginas = (numeroTotalItens <= 0) ? 1 : CalcularNumeroPaginas(numeroTotalItens, itensPaginaAtual.Count()),
+				NumeroPaginas = (numeroTotalItens <= 0) ? 1 : CalcularNumeroPaginas(numeroTotalItens, numeroItensPorPagina),
 				Pagina = numeroPaginaAtual,
 				ItensPagina = itensPaginaAtual
 			};

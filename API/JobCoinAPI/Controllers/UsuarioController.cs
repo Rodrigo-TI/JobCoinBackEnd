@@ -167,7 +167,7 @@ namespace JobCoinAPI.Controllers
 				var usuariosViewModels = UsuarioMapper.ConverterParaConsultaGeralUsuarioViewModel(usuarios);
 
 				var retornoUsuarios = Paginacao<ConsultaGeralUsuarioViewModel>
-					.PegarPaginacao(numeroTotalItens, pagina, usuariosViewModels);
+					.PegarPaginacao(numeroTotalItens, pagina, numeroItens, usuariosViewModels);
 
 				return usuariosViewModels == null ? NoContent() : Ok(retornoUsuarios);
 			}

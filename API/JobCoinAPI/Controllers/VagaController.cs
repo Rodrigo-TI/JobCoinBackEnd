@@ -263,7 +263,7 @@ namespace JobCoinAPI.Controllers
 				}
 
 				var retornoVagas = Paginacao<ConsultaGeralVagaViewModel>
-					.PegarPaginacao(numeroTotalItens, pagina, vagasViewModels);
+					.PegarPaginacao(numeroTotalItens, pagina, numeroItens, vagasViewModels);
 
 				return vagasViewModels == null ? NoContent() : Ok(retornoVagas);
 			}
@@ -362,7 +362,7 @@ namespace JobCoinAPI.Controllers
 				var vagasCriadasViewModels = VagaMapper.ConverterParaConsultaGeralVagaCriadaOuFavoritadaVagaViewModel(vagasCriadas);
 
 				var retornoVagasCriadas = Paginacao<ConsultaGeralVagaCriadaOuFavoritadaVagaViewModel>
-					.PegarPaginacao(numeroTotalItens, pagina, vagasCriadasViewModels);
+					.PegarPaginacao(numeroTotalItens, pagina, numeroItens, vagasCriadasViewModels);
 
 				return vagasCriadasViewModels == null ? NoContent() : Ok(retornoVagasCriadas);
 			}
@@ -464,7 +464,7 @@ namespace JobCoinAPI.Controllers
 				var vagasFavoritadasViewModels = VagaMapper.ConverterParaConsultaGeralVagaCriadaOuFavoritadaVagaViewModel(vagasFavoritadas);
 
 				var retornoVagasFavoritadas = Paginacao<ConsultaGeralVagaCriadaOuFavoritadaVagaViewModel>
-					.PegarPaginacao(numeroTotalItens, pagina, vagasFavoritadasViewModels);
+					.PegarPaginacao(numeroTotalItens, pagina, numeroItens, vagasFavoritadasViewModels);
 
 				return vagasFavoritadasViewModels == null ? NoContent() : Ok(retornoVagasFavoritadas);
 			}

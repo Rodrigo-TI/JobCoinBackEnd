@@ -107,7 +107,7 @@ namespace JobCoinAPI.Controllers
 				var funcionalidadesViewModels = FuncionalidadeMapper.ConverterParaConsultaViewModel(funcionalidades);
 
 				var retornoFuncionalidades = Paginacao<ConsultaFuncionalidadeViewModel>
-					.PegarPaginacao(numeroTotalItens, pagina, funcionalidadesViewModels);
+					.PegarPaginacao(numeroTotalItens, pagina, numeroItens, funcionalidadesViewModels);
 
 				return funcionalidadesViewModels == null ? NoContent() : Ok(retornoFuncionalidades);
 			}

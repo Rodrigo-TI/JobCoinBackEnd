@@ -177,7 +177,7 @@ namespace JobCoinAPI.Controllers
 				var perfisViewModels = PerfilMapper.ConverterParaConsultaViewModel(perfis);
 
 				var retornoPerfis = Paginacao<ConsultaPerfilViewModel>
-					.PegarPaginacao(numeroTotalItens, pagina, perfisViewModels);
+					.PegarPaginacao(numeroTotalItens, pagina, numeroItens, perfisViewModels);
 
 				return perfisViewModels == null ? NoContent() : Ok(retornoPerfis);
 			}
@@ -242,7 +242,7 @@ namespace JobCoinAPI.Controllers
 				var perfisFuncionalidadesViewModels = PerfilFuncionalidadeMapper.ConverterParaConsultaViewModel(perfisFuncionalidades);
 
 				var retornoPerfisFuncionalidades = Paginacao<ConsultaPerfilFuncionalidadeViewModel>
-					.PegarPaginacao(numeroTotalItens, pagina, perfisFuncionalidadesViewModels);
+					.PegarPaginacao(numeroTotalItens, pagina, numeroItens, perfisFuncionalidadesViewModels);
 
 				return perfisFuncionalidadesViewModels == null ? NoContent() : Ok(retornoPerfisFuncionalidades);
 			}
