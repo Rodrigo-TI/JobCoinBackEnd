@@ -244,7 +244,7 @@ namespace JobCoinAPI.Controllers
 
 				var guid = User.Claims.FirstOrDefault(i => i.Type.Contains("nameidentifier"))?.Value;
 
-				if (!string.IsNullOrEmpty(guid))
+				if (!string.IsNullOrEmpty(guid) && (vagasViewModels != null))
 				{
 					var idUsuario = Guid.Parse(guid);
 
