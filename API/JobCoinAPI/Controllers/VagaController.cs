@@ -242,6 +242,21 @@ namespace JobCoinAPI.Controllers
 
 				var vagasViewModels = VagaMapper.ConverterParaConsultaGeralVagaViewModel(vagas);
 
+				var idUsuario = Guid.Parse(User.Claims.FirstOrDefault(i => i.Type.Contains("nameidentifier")).Value);
+
+				var consultaVagasFavoritadas = await context.VagasFavoritadas
+					.AsNoTracking()
+					.Where(vagaFavoritada => vagaFavoritada.IdUsuario.Equals(idUsuario))
+					.ToListAsync();
+
+				foreach (var vaga in vagasViewModels)
+				{
+					var vagaFavoritada = consultaVagasFavoritadas.FirstOrDefault(v => v.IdVaga == vaga.IdVaga);
+
+					if (vagaFavoritada != null)
+						vaga.UsuarioAtualFavoritouVaga = true;
+				}
+
 				var retornoVagas = Paginacao<ConsultaGeralVagaViewModel>
 					.PegarPaginacao(numeroTotalItens, pagina, vagasViewModels);
 

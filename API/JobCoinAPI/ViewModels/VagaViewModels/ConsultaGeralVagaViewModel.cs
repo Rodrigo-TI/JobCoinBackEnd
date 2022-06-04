@@ -13,5 +13,7 @@ namespace JobCoinAPI.ViewModels.VagaViewModels
 		public float ValorVaga { get; set; }
 
 		public Guid IdUsuarioCriacaoVaga { get; set; }
+
+		public bool UsuarioAtualFavoritouVaga { get; set; }
 	}
 }
